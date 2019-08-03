@@ -106,3 +106,4 @@ venv.bak/
 #User
 
 run_app
+test.py

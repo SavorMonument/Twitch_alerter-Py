@@ -28,7 +28,9 @@ class NotificationService():
         notification.set_icon(Gio.FileIcon.new(
             Gio.File.new_for_path(path)))
 
-
+'''
+Keeps the state of the watched streams and calls functions on updates
+'''
 class StreamStatus():
 
     def __init__(self):
