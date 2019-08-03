@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+PYTHONPATH=~/projects/python_projects/Twitch-alerter/src \
+ python3 test/app_test.py
