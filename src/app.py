@@ -12,6 +12,10 @@ ICON_PATH = os.path.expanduser("~") + "/.icons/"
 
 class NotificationService():
 
+    """
+    Carefull it's finiky with names and it doesn't tell you in the exception
+    what the problem is
+    """
     def __init__(self, name):
         gi.require_version('Gio', '2.0')
         self.__app = Gio.Application.new(name, Gio.ApplicationFlags.FLAGS_NONE)
@@ -77,8 +81,8 @@ class StreamStatus():
             callback(name)
 
 
-def download_user_icons(user_ID, users: list):
-    user_data_by_username = twitch_api.UserDataByUsername(user_ID)
+def download_user_icons(user_ID, client_secret, users: list):
+    user_data_by_username = twitch_api.UserDataByUsername(user_ID, client_secret)
     user_data = user_data_by_username.get_data(users)
     user_data_parser = twitch_api.UserDataParser(user_data)
     for user in users:

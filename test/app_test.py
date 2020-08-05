@@ -13,14 +13,14 @@ class TestStreamStatus(unittest.TestCase):
         self.stream_status = StreamStatus()
         self.test_list_streams = ["kit", "test1"]
 
-    def test_update_active_streames_one_update(self):
+    def test_after_one_update__all_are_True(self):
 
         self.stream_status.update_active_streames(self.test_list_streams)
 
         self.assertEqual({name: True for name in self.test_list_streams},
                          self.stream_status.streamer_status)
 
-    def test_update_active_streames_two_updates_same_streames(self):
+    def test_after_two_updates__all_are_still_True(self):
 
         self.stream_status.update_active_streames(self.test_list_streams)
         self.stream_status.update_active_streames(self.test_list_streams)
@@ -28,7 +28,7 @@ class TestStreamStatus(unittest.TestCase):
         self.assertEqual({name: True for name in self.test_list_streams},
                          self.stream_status.streamer_status)
 
-    def test_update_active_streames_two_updates_different_streames(self):
+    def test_after_two_different_updates__the_common_are_True(self):
 
         test_list_streams2 = ["test2", "test3"]
         expected = {name: True for name in test_list_streams2}
@@ -39,7 +39,7 @@ class TestStreamStatus(unittest.TestCase):
 
         self.assertEqual(expected, self.stream_status.streamer_status)
 
-    def test_update_active_streames_two_updates_different_streames2(self):
+    def test_after_two_different_updates__the_common_are_True2(self):
 
         test_list_streams2 = ["kit", "test3"]
         expected = {"kit": True, "test3": True, "test1": False}
@@ -49,7 +49,7 @@ class TestStreamStatus(unittest.TestCase):
 
         self.assertEqual(expected, self.stream_status.streamer_status)
 
-    def test_update_active_streames_live_offline_live(self):
+    def test_after_update_with_empty_list__all_are_False(self):
 
         expected = {name: True for name in self.test_list_streams}
 
@@ -59,7 +59,7 @@ class TestStreamStatus(unittest.TestCase):
 
         self.assertEqual(expected, self.stream_status.streamer_status)
 
-    def test_update_active_streames_live_offline_live2(self):
+    def test_after_update_with_one_elem__that_elem_is_True(self):
 
         expected = {name: True for name in self.test_list_streams}
         expected.update({"test2": True})
@@ -71,7 +71,7 @@ class TestStreamStatus(unittest.TestCase):
 
         self.assertEqual(expected, self.stream_status.streamer_status)
 
-    def test_inactive_to_active_callback(self):
+    def test_after_online_update__the_inactive_to_active_is_called(self):
 
         self.test_list_streams = ["kit"]
         call = MagicMock()
@@ -81,7 +81,7 @@ class TestStreamStatus(unittest.TestCase):
 
         call.assert_called_with("kit")
 
-    def test_active_to_inactive_callback(self):
+    def test_after_offline_update__the_active_to_inactive_is_called(self):
 
         self.test_list_streams = ["kit"]
         call = MagicMock()
@@ -92,5 +92,32 @@ class TestStreamStatus(unittest.TestCase):
 
         call.assert_called_with("kit")
 
+    def test_after_online_update__the_active_to_inactive_is_not_called(self):
+
+        self.test_list_streams = ["kit"]
+        call = MagicMock()
+
+        self.stream_status.add_active_to_inactive_callback(call)
+        self.stream_status.update_active_streames(self.test_list_streams)
+
+        assert not call.called
+
+    def test_after_offline_update__the_inactive_to_active_is_not_called(self):
+
+        self.test_list_streams = ["kit"]
+        call = MagicMock()
+
+        self.stream_status.update_active_streames(self.test_list_streams)
+        self.stream_status.add_inactive_to_active_callback(call)
+        self.stream_status.update_active_streames([])
+
+        assert not call.called
 
 unittest.main()
+# class TestArgsResolver(unittest.TestCase):
+#
+#     def setUp(self):
+#         pass
+#
+#     def test_(self):
+#         pass

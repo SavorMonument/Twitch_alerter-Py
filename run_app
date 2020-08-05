@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+source secrets
+
+~/projects/python/twitch_alerter/src/entry.py $client_id $client_secret kitboga gamozo georgehotz healthygamer_gg

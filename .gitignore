@@ -1,3 +1,8 @@
+#Project specific
+
+test.py
+sercrets
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -102,8 +107,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-#User
-
-run_app
-test.py
